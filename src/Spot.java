@@ -16,6 +16,8 @@ public class Spot extends JPanel{
     Grid grid;
 
     public Spot(){
+        int test = 78780;
+        System.out.println(Integer.toBinaryString(test));
         grid = new Grid();
 
         InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -56,6 +58,7 @@ public class Spot extends JPanel{
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         grid.drawLines(g);
+        grid.drawCords(g);
     }
 
     @Override 
@@ -93,6 +96,16 @@ public class Spot extends JPanel{
             g.drawLine(p1x, p1y, p2x, p2y);
             g.drawLine(p3x, p3y, p4x, p4y);
             g.drawLine(p5x, p5y, p6x, p6y);
+
+        }
+
+        public void drawCords(Graphics g){
+            String xLineString = "XLine on:" +  Integer.toString(p1x) + "," + Integer.toString(p1y) + " - " + Integer.toString(p2x) + "," + Integer.toString(p2y);
+            g.drawString(xLineString, 50, 750);
+            String yLineString = "YLine on:" +  Integer.toString(p3x) + "," + Integer.toString(p3y) + " - " + Integer.toString(p4x) + "," + Integer.toString(p4y);
+            g.drawString(yLineString, 300, 750);
+            String zLineString = "zLine on:" +  Integer.toString(p5x) + "," + Integer.toString(p5y) + " - " + Integer.toString(p6x) + "," + Integer.toString(p6y);
+            g.drawString(zLineString, 600, 750);
         }
 
         public void shiftLeft(){
