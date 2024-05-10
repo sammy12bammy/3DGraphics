@@ -48,7 +48,7 @@ public class Spot extends JPanel{
         im.put(KeyStroke.getKeyStroke("DOWN"), "shiftDOWN");
         getActionMap().put("shiftDOWN", new AbstractAction(){
             public void actionPerformed(ActionEvent e) {
-                grid.shiftLeft();
+                grid.shiftDown();
                 repaint();
             }
         });
@@ -71,21 +71,21 @@ public class Spot extends JPanel{
         private static final int SHIFT_INC = 30;
         private final int ZMAX = WIDTH;
 
-        //x left to right
-        private int p1x = BUFFER;
-        private int p1y = HEIGHT / 2;
-        private int p2x = WIDTH - BUFFER;
-        private int p2y = HEIGHT / 2;
+        //x line
+        private int p1x = 102;
+        private int p1y = 216;
+        private int p2x = 697;
+        private int p2y = 583;
         //y top to bottom
         private int p3x = WIDTH / 2;
         private int p3y = BUFFER;
         private int p4x = WIDTH / 2;
         private int p4y = HEIGHT - BUFFER;
-        //z front to back
-        private int p5x = WIDTH / 2;
-        private int p5y = HEIGHT / 2;
-        private int p6x = WIDTH / 2;
-        private int p6y =  HEIGHT / 2;
+        //z line
+        private int p5x = 102;
+        private int p5y = 583;
+        private int p6x = 697;
+        private int p6y = 216;
 
 
         public Grid(){
@@ -133,31 +133,93 @@ public class Spot extends JPanel{
         }
 
         public void shiftRight(){
-            if(p1x < WIDTH / 2){
-                p1x -= SHIFT_INC;
-            } else {
-                p1x += SHIFT_INC;
+            //rotate x1
+            int quad = getQuad(p1x, p1y);
+            switch(quad){
+                case 1:
+                    p1x += SHIFT_INC;
+                    p1y -= SHIFT_INC;
+                    break;
+                case 2:
+                    p1x += SHIFT_INC;
+                    p1y += SHIFT_INC;
+                    break;
+                case 3: 
+                    p1x -= SHIFT_INC;
+                    p1y += SHIFT_INC;
+                    break;
+                case 4:
+                    p1x -= SHIFT_INC;
+                    p1y -= SHIFT_INC;
+                default:
+                    throw new NullPointerException("Error");
             }
-            if(p2x > WIDTH / 2){
-                p2x += SHIFT_INC;
-            } else {
-                p2x -= SHIFT_INC;
+
+            quad = getQuad(p2x, p2y);
+            switch(quad){
+                case 1:
+                    p2x += SHIFT_INC;
+                    p2y -= SHIFT_INC;
+                    break;
+                case 2:
+                    p2x += SHIFT_INC;
+                    p2y += SHIFT_INC;
+                    break;
+                case 3: 
+                    p2x -= SHIFT_INC;
+                    p2y += SHIFT_INC;
+                    break;
+                case 4:
+                    p2x -= SHIFT_INC;
+                    p2y -= SHIFT_INC;
+                default:
+                    throw new NullPointerException("Error");
             }
-            p5x += SHIFT_INC;
-            p6x -= SHIFT_INC;
+            quad = getQuad(p5x, p5y);
+            switch(quad){
+                case 1:
+                    p5x += SHIFT_INC;
+                    p5y -= SHIFT_INC;
+                    break;
+                case 2:
+                    p5x += SHIFT_INC;
+                    p5y += SHIFT_INC;
+                    break;
+                case 3: 
+                    p5x -= SHIFT_INC;
+                    p5y += SHIFT_INC;
+                    break;
+                case 4:
+                    p5x -= SHIFT_INC;
+                    p5y -= SHIFT_INC;
+                default:
+                    throw new NullPointerException("Error");
+            }
+            quad = getQuad(p6x, p6y);
+            switch(quad){
+                case 1:
+                    p6x += SHIFT_INC;
+                    p6y -= SHIFT_INC;
+                    break;
+                case 2:
+                    p6x += SHIFT_INC;
+                    p6y += SHIFT_INC;
+                    break;
+                case 3: 
+                    p6x -= SHIFT_INC;
+                    p6y += SHIFT_INC;
+                    break;
+                case 4:
+                    p6x -= SHIFT_INC;
+                    p6y -= SHIFT_INC;
+                default:
+                    throw new NullPointerException("Error");
+            }
+
         }
 
         public void shiftUp(){
-            if(p3y < BUFFER){
-                p3y += SHIFT_INC;
-            } else {
-                p3y -= SHIFT_INC;
-            }
-            if(p4y > HEIGHT - BUFFER){
-                p4y -= SHIFT_INC;
-            } else {
-                p4y += SHIFT_INC;
-            }
+
         }
 
         public void shiftDown(){
@@ -165,7 +227,18 @@ public class Spot extends JPanel{
         }
         
     }
-    
+
+    private int getQuad(int xPoint, int yPoint){
+        if(xPoint < 400 && yPoint < 400){
+            return 1;
+        } else if(xPoint >= 400 && yPoint < 400){
+            return 2;
+        } else if(xPoint >= 400 && yPoint >= 400){
+            return 3;
+        } else {
+            return 4;
+        }
+    }  
     public static void main(String[] args) throws Exception {
         SwingUtilities.invokeLater(new Runnable(){
             public void run(){
